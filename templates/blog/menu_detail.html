@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href={% static "css/style.css" %}>
+    <title>{{ item.name }}</title>
+  </head>
+  <body>
+    <h1>{{ item.name }}</h1>
+    {% if item.url %}
+      <p>URL: <a href="{{ item.url }}">{{ item.url }}</a></p>
+    {% endif %}
+    {% if item.parent %}
+      <p class="menu">Parent: <a href="{% url 'menu_detail' item.parent.id %}">{{ item.parent.name }}</a></p>
+    {% endif %}
+    {% if item.children.exists %}
+      <p>Children:</p>
+      <ul class="menu">
+        {% for child in item.children.all %}
+          <li><a href="{% url 'menu_detail' child.id %}">{{ child.name }}</a></li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </body>
+</html>

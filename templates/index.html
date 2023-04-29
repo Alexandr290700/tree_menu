@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href={% static "css/style.css" %}>
+    <title>Menu</title>
+    <script>
+      window.addEventListener('DOMContentLoaded', function() {
+        var menuItems = document.querySelectorAll('.menu-item');
+        menuItems.forEach(function(menuItem) {
+          menuItem.addEventListener('click', function() {
+            menuItem.classList.toggle('active');
+          });
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Menu</h1>
+    <ul class="menu">
+      {% for item in menu_items %}
+        {% if not item.parent %}
+          <li class="menu-item"><a href="{% url 'menu_detail' item.id %}">{{ item.name }}</a>
+            {% if item.children.all %}
+              <ul class="menu">
+                {% for child in item.children.all %}
+                  <li class="menu"><a href="{% url 'menu_detail' child.id %}">{{ child.name }}</a></li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </body>
+</html>
+
